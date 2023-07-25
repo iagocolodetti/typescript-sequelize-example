@@ -5,17 +5,11 @@ import Contact from '../models/Contact';
 
 export default {
     async create(contact: IContact) {
-        let transaction;
         try {
-            transaction = await database.getTransaction();
             const { name, phone, email } = contact;
-            const result = await Contact.create({ name, phone, email }, { transaction });
-            await transaction.commit();
+            const result = await Contact.create({ name, phone, email });
             return result.get({ plain: true });
         } catch (error: any) {
-            if (transaction) {
-                await transaction.rollback();
-            }
             throw error;
         }
     },

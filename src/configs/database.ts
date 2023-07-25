@@ -9,7 +9,6 @@ const databaseConfig: SequelizeOptions = {
     storage: join(__dirname, '../../contact_book.sqlite'),
     logging: false,
     define: {
-        timestamps: false,
         underscored: true
     }
 }
