@@ -1,8 +1,12 @@
+import IEmail from "./IEmail";
+import IPhone from "./IPhone";
+
 interface IContact {
     id?: number;
     name: string;
-    phone?: string | null;
-    email?: string | null;
+    alias: string;
+    phone: IPhone[];
+    email: IEmail[];
 }
 
 export default IContact;

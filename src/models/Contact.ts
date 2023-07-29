@@ -1,7 +1,16 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, DataType, AllowNull, CreatedAt, UpdatedAt, DefaultScope, Scopes, AfterCreate } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, DataType, AllowNull, CreatedAt, UpdatedAt, DefaultScope, AfterCreate, HasMany } from 'sequelize-typescript';
+import Phone from './Phone';
+import Email from './Email';
 
 @DefaultScope(() => ({
-    attributes: { 
+    include: [{
+        model: Phone,
+        as: Phone.tableName
+    },{
+        model: Email,
+        as: Email.tableName
+    }],
+    attributes: {
         exclude: ['created_at', 'updated_at']
     }
 }))
@@ -16,13 +25,15 @@ class Contact extends Model {
     @Column(DataType.STRING(45))
     name!: string;
 
-    @AllowNull(true)
-    @Column(DataType.STRING(20))
-    phone!: string | null;
+    @AllowNull(false)
+    @Column(DataType.STRING(45))
+    alias!: string;
+    
+    @HasMany(() => Phone, { onDelete: 'CASCADE' })
+    phone!: Phone[];
 
-    @AllowNull(true)
-    @Column(DataType.STRING(255))
-    email!: string | null;
+    @HasMany(() => Email, { onDelete: 'CASCADE' })
+    email!: Email[];
     
     @CreatedAt
     created_at?: Date;
