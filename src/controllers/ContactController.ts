@@ -10,22 +10,29 @@ import IEmail from "../interfaces/IEmail";
 
 export default {
     async create(contact: IContact) {
+        let transaction: Transaction | undefined;
         try {
+            transaction = await database.getTransaction();
             const result = await Contact.create(contact as any, {
                 include: [
                     Phone,
                     Email
-                ]
-            });
+                ],
+                transaction
+            }, );
+            await transaction.commit();
             return result.get({ plain: true });
         } catch (error: any) {
+            if (transaction) {
+                await transaction.rollback();
+            }
             throw error;
         }
     },
 
     async read() {
         try {
-            const result = ((await Contact.findAll({ raw: false })).map(contact => contact.get({ plain: true })));
+            const result = (await Contact.findAll({ raw: false })).map(contact => contact.get({ plain: true }));
             return result;
         } catch (error: any) {
             throw error;
@@ -60,7 +67,7 @@ export default {
                             contact_id
                         }, { transaction });
                     } else {
-                        await Phone.destroy({ where: { id: p.id, contact_id } });
+                        await Phone.destroy({ where: { id: p.id, contact_id }, transaction });
                     }
                 }));
                 await Promise.all(email.map(async (e: IEmail) => {
@@ -71,7 +78,7 @@ export default {
                             contact_id
                         }, { transaction });
                     } else {
-                        await Email.destroy({ where: { id: e.id, contact_id } });
+                        await Email.destroy({ where: { id: e.id, contact_id }, transaction });
                     }
                 }));
                 await result.update({ name, alias }, { transaction });

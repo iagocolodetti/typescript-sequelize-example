@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, ForeignKey, BelongsTo, AutoIncrement, DataType, AllowNull, CreatedAt, UpdatedAt, AfterCreate, DefaultScope } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, ForeignKey, BelongsTo, AutoIncrement, DataType, AllowNull, CreatedAt, UpdatedAt, AfterCreate, DefaultScope, Length } from 'sequelize-typescript';
 
 import Contact from './Contact';
 
@@ -15,6 +15,7 @@ class Phone extends Model {
     id!: number;
 
     @AllowNull(false)
+    @Length({ min: 3, max: 20 })
     @Column(DataType.STRING(20))
     phone!: string;
 

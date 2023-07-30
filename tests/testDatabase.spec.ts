@@ -32,6 +32,40 @@ describe('testDatabase', () => {
     afterAll(async () => {
         await database.close();
     });
+    
+    describe('should fail to create a new contact', () => {
+        it('name validation', async () => {
+            const contact = structuredClone(MOCK_CONTACT);
+            contact.name = 'aa'
+            await expect(ContactController.create(contact)).rejects.toThrowError();
+            const result = await ContactController.read();
+            expect(result.length).toEqual(0);
+        });
+
+        it('alias validation', async () => {
+            const contact = structuredClone(MOCK_CONTACT);
+            contact.alias = 'aa'
+            await expect(ContactController.create(contact)).rejects.toThrowError();
+            const result = await ContactController.read();
+            expect(result.length).toEqual(0);
+        });
+
+        it('phone validation', async () => {
+            const contact = structuredClone(MOCK_CONTACT);
+            contact.phone[0].phone = '12';
+            await expect(ContactController.create(contact)).rejects.toThrowError();
+            const result = await ContactController.read();
+            expect(result.length).toEqual(0);
+        });
+
+        it('email validation', async () => {
+            const contact = structuredClone(MOCK_CONTACT);
+            contact.email[0].email = 'email1@gmail';
+            await expect(ContactController.create(contact)).rejects.toThrowError();
+            const result = await ContactController.read();
+            expect(result.length).toEqual(0);
+        });
+    });
 
     it('should create a new contact', async () => {
         const result: IContact = await ContactController.create(MOCK_CONTACT);

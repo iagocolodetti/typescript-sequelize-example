@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, DataType, AllowNull, CreatedAt, UpdatedAt, DefaultScope, AfterCreate, HasMany } from 'sequelize-typescript';
+import { Table, Column, Model, PrimaryKey, AutoIncrement, DataType, AllowNull, CreatedAt, UpdatedAt, DefaultScope, AfterCreate, HasMany, Length } from 'sequelize-typescript';
 import Phone from './Phone';
 import Email from './Email';
 
@@ -22,10 +22,12 @@ class Contact extends Model {
     id!: number;
 
     @AllowNull(false)
+    @Length({ min: 3, max: 45 })
     @Column(DataType.STRING(45))
     name!: string;
 
     @AllowNull(false)
+    @Length({ min: 3, max: 45 })
     @Column(DataType.STRING(45))
     alias!: string;
     

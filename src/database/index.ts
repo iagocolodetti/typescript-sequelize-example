@@ -13,15 +13,15 @@ export default {
         try {
             await sequelize.authenticate();
             sequelize.addModels([Contact, Phone, Email]);
-            console.log('Conexão com o banco de dados estabelecida.');
+            console.log('Database connection established.');
         } catch {
-            console.log('Não foi possível estabelecer a conexão com o banco de dados.');
+            console.error('The connection to the database could not be established.');
         }
     },
     
     async close() {
         await sequelize.close();
-        console.log('Conexão com o banco de dados encerrada.');
+        console.log('Database connection closed.');
     },
 
     async getTransaction() {

@@ -11,8 +11,8 @@
     "copy-database:windows": "copy /y \"contact_book.sqlite\" \"dist\"",
     "build:windows": "yarn clean:windows && tsc && yarn copy-database:windows",
     "start": "node ./dist/src/index.js",
-    "test:ts": "jest --verbose --watchAll .*.spec.ts",
-    "test:js": "jest --verbose .*.spec.js"
+    "test:ts": "jest --detectOpenHandles --verbose --watchAll .*.spec.ts",
+    "test:js": "jest --detectOpenHandles --verbose .*.spec.js"
   },
   "dependencies": {
     "reflect-metadata": "^0.1.13",
